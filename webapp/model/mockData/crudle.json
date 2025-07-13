@@ -1,0 +1,40 @@
+{
+    "workItems": [
+        {
+            "id": "001",
+            "name": "Abhishek Dubey",
+            "assignedWork": "Complete the whole CRUD Operation",
+            "status": "In Progress"
+        }
+    ],
+    "statuses": [
+        {
+            "key": "IceBox",
+            "text": "IceBox"
+        },
+        {
+            "key": "In Progress",
+            "text": "In Progress"
+        },
+        {
+            "key": "In Dev",
+            "text": "In Dev"
+        },
+        {
+            "key": "In QA",
+            "text": "In QA"
+        },
+        {
+            "key": "Completed",
+            "text": "Completed"
+        },
+        {
+            "key": "Done",
+            "text": "Done"
+        },
+        {
+            "key": "Blocked",
+            "text": "Blocked"
+        }
+    ]
+}
