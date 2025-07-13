@@ -27,7 +27,7 @@
 
                 <Label
                     id="_IDGenLabel1"
-                    text="Name"
+                    text="Assignee"
                 />
                 <Input
                     id="_IDGenInput1"
@@ -170,6 +170,42 @@
                     </ColumnListItem>
                 </items>
             </Table>
+            <Panel
+                id="_IDGenPanel1"
+                headerText="Task History"
+                expandable="true"
+                expanded="false"
+                class="sapUiSmallMarginTop"
+            >
+                <List
+                    id="_IDGenList"
+                    items="{/historyLog}"
+                >
+                    <CustomListItem id="_IDGenCustomListItem">
+                        <HBox
+                            id="_IDGenHBox"
+                            alignItems="Center"
+                            justifyContent="Start"
+                        >
+                            <!-- Icon for action -->
+                            <core:Icon
+                                id="_IDGenIcon"
+                                src="{= ${action} === 'Created' ? 'sap-icon://add' : ${action} === 'Updated' ? 'sap-icon://edit' : 'sap-icon://delete' }"
+                                color="{= ${action} === 'Created' ? 'Positive' : ${action} === 'Updated' ? 'Neutral' : 'Negative' }"
+                                size="1.5rem"
+                                class="sapUiSmallMarginEnd"
+                            />
+                            <!-- Action + Timestamp -->
+                            <VBox id="_IDGenVBox">
+                                <Text
+                                    id="_IDGenText9"
+                                    text="{parts: [{path: 'action'},{path: 'item'},{path: 'timestamp'}], formatter: '.formatHistoryEntry'}"
+                                />
+                            </VBox>
+                        </HBox>
+                    </CustomListItem>
+                </List>
+            </Panel>
         </content>
     </Page>
 </mvc:View>
