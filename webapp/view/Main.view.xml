@@ -5,13 +5,13 @@
     xmlns:core="sap.ui.core"
 >
     <Page
-        id="page"
+        id="_IDGenPage"
         title="{i18n>title}"
     >
         <content>
-            <!-- FORM TO ADD NEW ENTRY -->
+            <!-- Form to Add/Edit Item -->
             <VBox
-                id="_IDGenVBox1"
+                id="_IDGenVBox"
                 class="sapUiSmallMargin"
                 width="30%"
             >
@@ -44,14 +44,15 @@
                     value="{/newItem/assignedWork}"
                     placeholder="Enter Work"
                 />
+
                 <Label
-                    id="_IDGenLabel4"
+                    id="_IDGenLabel3"
                     text="Status"
                 />
                 <Select
                     id="_IDGenSelect"
                     selectedKey="{/newItem/status}"
-                    items="{path: '/statuses'}"
+                    items="{/statuses}"
                     width="100%"
                 >
                     <core:Item
@@ -60,8 +61,9 @@
                         text="{text}"
                     />
                 </Select>
+
                 <Button
-                    id="_IDGenButton"
+                    id="_IDGenButton1"
                     text="{= ${/currentEditIndex} > -1 ? 'Update' : 'Add'}"
                     press="onAdd"
                     type="Emphasized"
@@ -69,13 +71,14 @@
                 />
             </VBox>
 
-            <!-- TABLE TO DISPLAY DATA -->
+            <!-- Table of Work Items -->
             <Table
                 id="_IDGenTable"
                 items="{/workItems}"
-                inset="false"
-                mode="None"
+                mode="SingleSelectMaster"
+                selectionChange="onSelect"
                 class="sapUiResponsiveMargin"
+                inset="false"
                 width="auto"
             >
                 <headerToolbar>
@@ -143,22 +146,20 @@
                                 text="{status}"
                             />
                             <HBox
-                                id="_IDGenHBox1"
+                                id="_IDGenHBox"
                                 alignItems="Center"
                                 justifyContent="Center"
-                                renderType="Bare"
-                                fitContainer="true"
                                 class="sapUiSmallMarginBeginEnd"
                             >
                                 <Button
-                                    id="_IDGenButton1"
+                                    id="_IDGenButton2"
                                     icon="sap-icon://edit"
-                                    press="onEdit"
+                                    press="onSelect"
                                     type="Emphasized"
                                     tooltip="Edit"
                                 />
                                 <Button
-                                    id="_IDGenButton2"
+                                    id="_IDGenButton3"
                                     icon="sap-icon://delete"
                                     press="onDelete"
                                     type="Reject"
@@ -170,42 +171,46 @@
                     </ColumnListItem>
                 </items>
             </Table>
-            <Panel
-                id="_IDGenPanel1"
-                headerText="Task History"
-                expandable="true"
-                expanded="false"
-                class="sapUiSmallMarginTop"
+
+            <!-- History Panel -->
+            <VBox
+                id="_IDGenVBox2"
+                class="sapUiSmallMarginTop sapUiMediumMarginBeginEnd"
             >
-                <List
-                    id="_IDGenList"
-                    items="{/historyLog}"
+                <Panel
+                    id="_IDGenPanel"
+                    headerText="Task History"
+                    expandable="true"
+                    expanded="false"
                 >
-                    <CustomListItem id="_IDGenCustomListItem">
-                        <HBox
-                            id="_IDGenHBox"
-                            alignItems="Center"
-                            justifyContent="Start"
-                        >
-                            <!-- Icon for action -->
-                            <core:Icon
-                                id="_IDGenIcon"
-                                src="{= ${action} === 'Created' ? 'sap-icon://add' : ${action} === 'Updated' ? 'sap-icon://edit' : 'sap-icon://delete' }"
-                                color="{= ${action} === 'Created' ? 'Positive' : ${action} === 'Updated' ? 'Neutral' : 'Negative' }"
-                                size="1.5rem"
-                                class="sapUiSmallMarginEnd"
-                            />
-                            <!-- Action + Timestamp -->
-                            <VBox id="_IDGenVBox">
-                                <Text
-                                    id="_IDGenText9"
-                                    text="{parts: [{path: 'action'},{path: 'item'},{path: 'timestamp'}], formatter: '.formatHistoryEntry'}"
+                    <List
+                        id="_IDGenList"
+                        items="{/filteredHistoryLog}"
+                    >
+                        <CustomListItem id="_IDGenCustomListItem">
+                            <HBox
+                                id="_IDGenHBox1"
+                                alignItems="Center"
+                                justifyContent="Start"
+                            >
+                                <core:Icon
+                                    id="_IDGenIcon"
+                                    src="{= ${action} === 'Created' ? 'sap-icon://add' : ${action} === 'Updated' ? 'sap-icon://edit' : 'sap-icon://delete' }"
+                                    color="{= ${action} === 'Created' ? 'Positive' : ${action} === 'Updated' ? 'Neutral' : 'Negative' }"
+                                    size="1.5rem"
+                                    class="sapUiSmallMarginEnd"
                                 />
-                            </VBox>
-                        </HBox>
-                    </CustomListItem>
-                </List>
-            </Panel>
+                                <VBox id="_IDGenVBox1">
+                                    <Text
+                                        id="_IDGenText9"
+                                        text="{parts: [{path: 'action'},{path: 'item'},{path: 'timestamp'}], formatter: '.formatHistoryEntry'}"
+                                    />
+                                </VBox>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </Panel>
+            </VBox>
         </content>
     </Page>
 </mvc:View>

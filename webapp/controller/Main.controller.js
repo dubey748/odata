@@ -6,123 +6,101 @@ sap.ui.define([
 
     return Controller.extend("sap.crudle.crudle.controller.Main", {
         onInit: function () {
-            var dataModel = new JSONModel();
+            const dataModel = new JSONModel();
             dataModel.loadData("/model/mockData/crudle.json", null, false);
 
-            var workItems = [];
-            var statuses = [];
-            var historyLog = []
-
-            if (dataModel.getProperty("/workItems")) {
-                workItems = dataModel.getProperty("/workItems");
-            }
-
-            if (dataModel.getProperty("/statuses")) {
-                statuses = dataModel.getProperty("/statuses");
-            }
-            if (dataModel.getProperty("/historyLog")) {
-                historyLog = dataModel.getProperty("/historyLog");
-            }
-
-            var initialModel = {
-                newItem: {
-                    id: "",
-                    name: "",
-                    assignedWork: "",
-                    status: ""
-                },
-                workItems: workItems,
-                statuses: statuses,
+            const initialModel = {
+                newItem: { id: "", name: "", assignedWork: "", status: "" },
+                workItems: dataModel.getProperty("/workItems") || [],
+                statuses: dataModel.getProperty("/statuses") || [],
+                historyLog: dataModel.getProperty("/historyLog") || [],
+                filteredHistoryLog: [],
                 currentEditIndex: -1,
-                historyLog: historyLog
+                selectedTaskId: ""
             };
 
-            var oModel = new JSONModel(initialModel);
-            this.getView().setModel(oModel);
+            this.getView().setModel(new JSONModel(initialModel));
         },
-        onAdd: function () {
-            var oModel = this.getView().getModel();
-            var newItem = oModel.getProperty("/newItem");
-            var index = oModel.getProperty("/currentEditIndex");
-            var workItems = oModel.getProperty("/workItems") || [];
-            var historyLog = oModel.getProperty("/historyLog") || []; // ✅ Declare historyLog properly
 
-            let action = "";
+        onAdd: function () {
+            const oModel = this.getView().getModel();
+            const newItem = oModel.getProperty("/newItem");
+            const index = oModel.getProperty("/currentEditIndex");
+            const workItems = oModel.getProperty("/workItems");
+            const historyLog = oModel.getProperty("/historyLog");
+
+            let action;
+            const clonedItem = Object.assign({}, newItem);
 
             if (index > -1) {
-                // 🔁 Update existing item
-                workItems[index] = Object.assign({}, newItem);
-                oModel.setProperty("/workItems", workItems);
+                workItems[index] = clonedItem;
                 action = "Updated";
-
-                // Reset state
                 oModel.setProperty("/currentEditIndex", -1);
             } else {
-                // ➕ Add new item
-                var itemToAdd = Object.assign({}, newItem);
-                workItems.push(itemToAdd);
-                oModel.setProperty("/workItems", workItems);
+                workItems.push(clonedItem);
                 action = "Created";
             }
 
-            // Clone item for logging
-            var itemToLog = Object.assign({}, newItem);
-
-            // ✅ Push into historyLog correctly
+            oModel.setProperty("/workItems", workItems);
             historyLog.push({
-                action: action,
-                item: itemToLog,
+                action,
+                item: clonedItem,
                 timestamp: this._getFormattedTimestamp()
             });
-
-            // ✅ Update historyLog back into the model
             oModel.setProperty("/historyLog", historyLog);
 
-            // Clear form
+            this._updateFilteredHistory();
+
             oModel.setProperty("/newItem", {
-                id: "",
-                name: "",
-                assignedWork: "",
-                status: ""
+                id: "", name: "", assignedWork: "", status: ""
             });
         },
-        onDelete: function (oEvent) {
-            var oModel = this.getView().getModel();
-            var workItems = oModel.getProperty("/workItems");
-            var historyLog = oModel.getProperty("/historyLog") || [];
-            // Get index from the clicked row
-            var oContext = oEvent.getSource().getBindingContext();
-            var index = oContext.getPath().split("/").pop(); // Get index
 
-            // Store the item before deleting
-            var deletedItem = Object.assign({}, workItems[index]);
-            // Remove the item
+        onDelete: function (oEvent) {
+            const oModel = this.getView().getModel();
+            const workItems = oModel.getProperty("/workItems");
+            const historyLog = oModel.getProperty("/historyLog");
+
+            const oContext = oEvent.getSource().getBindingContext();
+            const index = oContext.getPath().split("/").pop();
+            const deletedItem = Object.assign({}, workItems[index]);
+
             workItems.splice(index, 1);
             oModel.setProperty("/workItems", workItems);
+
             historyLog.push({
                 action: "Deleted",
                 item: deletedItem,
                 timestamp: this._getFormattedTimestamp()
             });
             oModel.setProperty("/historyLog", historyLog);
+
+            this._updateFilteredHistory();
         },
-        onEdit: function (oEvent) {
-            var oModel = this.getView().getModel();
-            var oContext = oEvent.getSource().getBindingContext();
-            var index = oContext.getPath().split("/").pop();
 
-            var selectedItem = oModel.getProperty(oContext.getPath());
+        onSelect: function (oEvent) {
+            const oModel = this.getView().getModel();
+            let oContext = oEvent.getParameter("listItem")?.getBindingContext()
+                || oEvent.getSource().getBindingContext();
 
-            // Set selected item to form (input fields)
+            if (!oContext) return;
+
+            const selectedItem = oContext.getObject();
+            const workItems = oModel.getProperty("/workItems");
+
+            const index = workItems.findIndex(item => item.id === selectedItem.id);
+
             oModel.setProperty("/newItem", Object.assign({}, selectedItem));
-
-            // Store index to know which item to update
             oModel.setProperty("/currentEditIndex", index);
+            oModel.setProperty("/selectedTaskId", selectedItem.id);
+
+            this._updateFilteredHistory();
         },
+
         _getFormattedTimestamp: function () {
-            var now = new Date();
-            return now.toLocaleString();
+            return new Date().toLocaleString();
         },
+
         formatHistoryEntry: function (action, item, timestamp) {
             if (!item) return "";
 
@@ -131,7 +109,18 @@ sap.ui.define([
             const status = item.status || "Unknown";
 
             return `Task (ID: ${id}) was ${action} by "${assignee}"\nStatus: ${status} on ${timestamp}`;
-        }
+        },
 
+        _updateFilteredHistory: function () {
+            const oModel = this.getView().getModel();
+            const selectedId = oModel.getProperty("/selectedTaskId");
+            const allHistory = oModel.getProperty("/historyLog") || [];
+
+            const filtered = selectedId
+                ? allHistory.filter(entry => entry.item?.id === selectedId)
+                : [];
+
+            oModel.setProperty("/filteredHistoryLog", filtered);
+        }
     });
 });
