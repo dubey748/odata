@@ -1,0 +1,22 @@
+<mvc:View controllerName="sap.crudle.crudle.controller.SecondView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m" displayBlock="true">
+
+    <Page id="SecondPage" title="Second Page">
+
+        <!-- Optional toolbar at the top -->
+        <headerContent>
+            <Button id="_IDGenButton" icon="sap-icon://nav-back" press="onPrevPress" tooltip="Go Back" />
+        </headerContent>
+
+        <content>
+            <VBox id="_IDGenVBox4" width="100%" justifyContent="Center" alignItems="Center" class="sapUiSmallMarginTop sapUiMediumMargin">
+
+                <Text id="_IDGenText10" text="🎉 Welcome to the Second View!" class="sapUiSmallMargin sapUiResponsiveMargin sapMTitle sapUiLargeFont" />
+
+                <Button id="_IDGenButton4" text="← Go Back" type="Emphasized" press="onPrevPress" class="sapUiTinyMarginTop" />
+            </VBox>
+        </content>
+
+    </Page>
+</mvc:View>

@@ -121,6 +121,12 @@ sap.ui.define([
                 : [];
 
             oModel.setProperty("/filteredHistoryLog", filtered);
+        },
+
+        // Routing Logic
+        onNextPress: function () {
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteSecond");
         }
     });
 });

@@ -79,12 +79,23 @@
           "target": [
             "TargetMain"
           ]
+        },
+        {
+          "name": "RouteSecond",
+          "pattern": "second",
+          "target": [
+            "TargetSecond"
+          ]
         }
       ],
       "targets": {
         "TargetMain": {
           "id": "Main",
           "name": "Main"
+        },
+        "TargetSecond": {
+          "name": "SecondView",
+          "id": "SecondView"
         }
       }
     },
