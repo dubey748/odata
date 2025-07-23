@@ -1,22 +1,81 @@
-<mvc:View controllerName="sap.crudle.crudle.controller.SecondView"
+<mvc:View id="_IDGenView" controllerName="sap.crudle.crudle.controller.SecondView"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m" displayBlock="true">
-
-    <Page id="SecondPage" title="Second Page">
-
-        <!-- Optional toolbar at the top -->
-        <headerContent>
-            <Button id="_IDGenButton" icon="sap-icon://nav-back" press="onPrevPress" tooltip="Go Back" />
-        </headerContent>
-
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Page id="_IDGenPage2" title="View 2" showNavButton="true" navButtonPress="onBack">
+        <!-- <Button text="Back" icon="sap-icon://arrow-left" press="onBack" /> -->
         <content>
-            <VBox id="_IDGenVBox4" width="100%" justifyContent="Center" alignItems="Center" class="sapUiSmallMarginTop sapUiMediumMargin">
+            <ObjectHeader id="_IDGenObjectHeader" intro="{healthBenefit}" title="{name}" icon="{image}" number="{price}" numberUnit="{curr}"></ObjectHeader>
 
-                <Text id="_IDGenText10" text="🎉 Welcome to the Second View!" class="sapUiSmallMargin sapUiResponsiveMargin sapMTitle sapUiLargeFont" />
-
-                <Button id="_IDGenButton4" text="← Go Back" type="Emphasized" press="onPrevPress" class="sapUiTinyMarginTop" />
-            </VBox>
+            <IconTabBar id="_IDGenIconTabBar">
+                <items>
+                    <IconTabFilter id="_IDGenIconTabFilter" icon="sap-icon://warning" text="More Info">
+                        <core:Fragment fragmentName="sap.crudle.crudle.fragments.moreInfo" type="XML" />
+                        <core:Fragment fragmentName="sap.crudle.crudle.fragments.moreInfo" type="XML" />
+                    </IconTabFilter>
+                    <IconTabFilter id="_IDGenIconTabFilter1" iconColor="Positive" icon="sap-icon://supplier" text="Supplier">
+                        <Table id="_IDGenTable1" items="{/supplier}">
+                            <headerToolbar>
+                                <Toolbar id="_IDGenToolbar1">
+                                    <ToolbarSpacer id="_IDGenToolbarSpacer"></ToolbarSpacer>
+                                    <Button id="_IDGenButton" icon="sap-icon://filter" press="onFilter" />
+                                </Toolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column id="_IDGenColumn5">
+                                    <header>
+                                        <Text id="_IDGenText10" text="Name" />
+                                    </header>
+                                </Column>
+                                <Column id="_IDGenColumn6">
+                                    <header>
+                                        <Text id="_IDGenText11" text="City" />
+                                    </header>
+                                </Column>
+                                <Column id="_IDGenColumn7" minScreenWidth="Tablet" demandPopin="true">
+                                    <header>
+                                        <Text id="_IDGenText12" text="Since When" />
+                                    </header>
+                                </Column>
+                                <Column id="_IDGenColumn8" minScreenWidth="Tablet">
+                                    <header>
+                                        <Text id="_IDGenText13" text="Contact Person" />
+                                    </header>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="_IDGenColumnListItem1">
+                                    <Text id="_IDGenText14" text="{name}" />
+                                    <Input id="_IDGenInput3" value="{city}" showValueHelp="true" valueHelpRequest="onF4Help"/>
+                                    <Text id="_IDGenText15" text="{sinceWhen}" />
+                                    <Link id="_IDGenLink" text="{person}" press="onLinkPress"></Link>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+                    <IconTabFilter id="_IDGenIconTabFilter2" iconColor="Negative" icon="sap-icon://home" text="Cities">
+                        <Select id="_IDGenSelect1" items="{/cities}">
+                            <core:Item id="_IDGenItem3" text="{cityName}" key="{cityName}" />
+                        </Select>
+                        <ComboBox id="_IDGenComboBox" items="{/cities}">
+                            <core:Item id="_IDGenItem4" text="{cityName}" key="{cityName}" />
+                        </ComboBox>
+                        <MultiComboBox id="_IDGenMultiComboBox" items="{/cities}">
+                            <core:Item id="_IDGenItem5" text="{cityName}" key="{cityName}" />
+                        </MultiComboBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
         </content>
-
+        <footer>
+            <Toolbar id="_IDGenToolbar2">
+                <content>
+                    <ToolbarSpacer id="_IDGenToolbarSpacer1"></ToolbarSpacer>
+                    <Button id="_IDGenButton4" text="Order" type="Emphasized" />
+                    <Button id="_IDGenButton5" text="Cancel" type="Reject" />
+                </content>
+            </Toolbar>
+        </footer>
     </Page>
 </mvc:View>

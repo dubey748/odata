@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+    <f:SimpleForm id="_IDGenSimpleForm1">
+        <Label id="_IDGenLabel6" text="Color" />
+        <Text id="_IDGenText16" text="{color}" />
+        <Label id="_IDGenLabel7" text="Taste" class="sapUiSmallMarginTop"/>
+        <Text id="_IDGenText17" text="{taste}" class="sapUiSmallMarginTop"/>
+        <Label id="_IDGenLabel8" text="Price" />
+        <Text id="_IDGenText18" text="{
+            parts: [{path: 'price'}, {path: 'curr'}],
+            formatter: '.formatter.formatCurrency'
+        }" />
+        <Label id="_IDGenLabel9" text="Season" />
+        <Text id="_IDGenText19" text="{season}" />
+    </f:SimpleForm>
+</core:FragmentDefinition>

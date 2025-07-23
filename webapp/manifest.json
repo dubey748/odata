@@ -7,8 +7,8 @@
     "applicationVersion": {
       "version": "0.0.1"
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
+    "title": "{{APP_TITLE}}",
+    "description": "{{APP_DESCRIPTION}}",
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
@@ -19,91 +19,83 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
+      "icon": "sap-icon://home"
     },
     "deviceTypes": {
       "desktop": true,
-      "tablet": true,
-      "phone": true
+      "phone": true,
+      "tablet": true
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
     "dependencies": {
       "minUI5Version": "1.138.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.table": {}
+      }
+    },
+    "rootView": {
+      "id": "idAppView",
+      "type": "XML",
+      "viewName": "sap.crudle.crudle.view.App"
+    },
+    "routing": {
+      "config": {
+        "viewPath": "sap.crudle.crudle.view",
+        "viewType": "XML",
+        "controlId": "appCon",
+        "clearControlAggregation": true
+      },
+      "routes": [
+        {
+          "name": "master",
+          "pattern": "",
+          "target": [
+            "joe",
+            "biden"
+          ]
+        },
+        {
+          "name": "detail",
+          "pattern": "fruits/{fruitId}",
+          "target": [
+            "joe",
+            "modi"
+          ]
+        }
+      ],
+      "targets": {
+        "joe": {
+          "viewName": "Main",
+          "controlAggregation": "masterPages"
+        },
+        "biden": {
+          "viewName": "Empty",
+          "controlAggregation": "detailPages"
+        },
+        "modi": {
+          "viewName": "SecondView",
+          "controlAggregation": "detailPages"
+        }
       }
     },
     "contentDensities": {
       "compact": true,
       "cozy": true
     },
+    "library": {
+      "css": "css/style.css"
+    },
     "models": {
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "sap.crudle.crudle.i18n.i18n"
-        }
-      }
-    },
-    "resources": {
-      "css": [
-        {
-          "uri": "css/style.css"
-        }
-      ]
-    },
-    "routing": {
-      "config": {
-        "routerClass": "sap.m.routing.Router",
-        "controlAggregation": "pages",
-        "controlId": "app",
-        "transition": "slide",
-        "type": "View",
-        "viewType": "XML",
-        "path": "sap.crudle.crudle.view",
-        "async": true,
-        "viewPath": "sap.crudle.crudle.view"
+        "uri": "i18n/i18n.properties"
       },
-      "routes": [
-        {
-          "name": "RouteMain",
-          "pattern": ":?query:",
-          "target": [
-            "TargetMain"
-          ]
-        },
-        {
-          "name": "RouteSecond",
-          "pattern": "second",
-          "target": [
-            "TargetSecond"
-          ]
-        }
-      ],
-      "targets": {
-        "TargetMain": {
-          "id": "Main",
-          "name": "Main"
-        },
-        "TargetSecond": {
-          "name": "SecondView",
-          "id": "SecondView"
-        }
+      "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mockData/fruits.json"
       }
-    },
-    "rootView": {
-      "viewName": "sap.crudle.crudle.view.App",
-      "type": "XML",
-      "id": "App",
-      "async": true
     }
   }
 }

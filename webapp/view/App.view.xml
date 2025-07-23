@@ -1,7 +1,5 @@
-<mvc:View controllerName="sap.crudle.crudle.controller.App"
-    displayBlock="true"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <App id="app">
-    </App>
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="sap.crudle.crudle.controller.App">
+<!--  this will be our Container Control which will be parent for other
+    view, there are different types of container control -->
+<SplitApp id="appCon"/>
 </mvc:View>

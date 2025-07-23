@@ -1,26 +1,19 @@
 sap.ui.define([
-    "sap/ui/core/UIComponent",
-    "sap/crudle/crudle/model/models"
-], (UIComponent, models) => {
-    "use strict";
-
+    'sap/ui/core/UIComponent'
+], function (UIComponent) {
+    'use strict';
     return UIComponent.extend("sap.crudle.crudle.Component", {
         metadata: {
-            manifest: "json",
-            interfaces: [
-                "sap.ui.core.IAsyncContentCreation"
-            ]
+            manifest: "json"
         },
-
-        init() {
-            // call the base component's init function
-            UIComponent.prototype.init.apply(this, arguments);
-
-            // set the device model
-            this.setModel(models.createDeviceModel(), "device");
-
-            // enable routing
-            this.getRouter().initialize();
-        }
+        init: function () {
+            //this line will call the base class constructor
+            UIComponent.prototype.init.apply(this);
+            //Step 1: inside the manifest.json file add - rootView, routing sections
+            //Step 2: Get the router object
+            var oRouter = this.getRouter();
+            //Step 3: Initialize the router
+            oRouter.initialize();
+        },
     });
 });

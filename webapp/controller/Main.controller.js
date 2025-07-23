@@ -1,132 +1,95 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (Controller, Filter, FilterOperator) {
     "use strict";
 
     return Controller.extend("sap.crudle.crudle.controller.Main", {
         onInit: function () {
-            const dataModel = new JSONModel();
-            dataModel.loadData("/model/mockData/crudle.json", null, false);
-
-            const initialModel = {
-                newItem: { id: "", name: "", assignedWork: "", status: "" },
-                workItems: dataModel.getProperty("/workItems") || [],
-                statuses: dataModel.getProperty("/statuses") || [],
-                historyLog: dataModel.getProperty("/historyLog") || [],
-                filteredHistoryLog: [],
-                currentEditIndex: -1,
-                selectedTaskId: ""
-            };
-
-            this.getView().setModel(new JSONModel(initialModel));
+            //The ROuter object is readily available with Component.js
+            //So we are getting the same.
+            this.Router = this.getOwnerComponent().getRouter();
+            this.Router.getRoute("detail").attachPatternMatched(this.herculis, this);
         },
+        herculis: function (oEvent) {
+            debugger;
+            //var fruitId = oEvent.getParameter("arguments").fruitId;
+            var sPath = this.extractPath(oEvent);
+            var oList = this.getView().byId("idLST");
+            debugger;
+            var element = {};
+            if (oList.getItems().length > 0) {
+                for (let i = 0; i < oList.getItems().length; i++) {
+                    element = oList.getItems()[i];
+                    if (element.getBindingContextPath() === sPath) {
+                        oList.setSelectedItem(element);
+                        break;
+                    }
 
-        onAdd: function () {
-            const oModel = this.getView().getModel();
-            const newItem = oModel.getProperty("/newItem");
-            const index = oModel.getProperty("/currentEditIndex");
-            const workItems = oModel.getProperty("/workItems");
-            const historyLog = oModel.getProperty("/historyLog");
-
-            let action;
-            const clonedItem = Object.assign({}, newItem);
-
-            if (index > -1) {
-                workItems[index] = clonedItem;
-                action = "Updated";
-                oModel.setProperty("/currentEditIndex", -1);
-            } else {
-                workItems.push(clonedItem);
-                action = "Created";
+                }
+                // if(element){
+                //     oList.setSelectedItem(element);
+                // }
             }
 
-            oModel.setProperty("/workItems", workItems);
-            historyLog.push({
-                action,
-                item: clonedItem,
-                timestamp: this._getFormattedTimestamp()
-            });
-            oModel.setProperty("/historyLog", historyLog);
 
-            this._updateFilteredHistory();
-
-            oModel.setProperty("/newItem", {
-                id: "", name: "", assignedWork: "", status: ""
+        },
+        onNext: function () {
+            //step 1: get the parent control object - Container for our view
+            var oAppCon = this.getView().getParent();
+            //step 2: ask parent to nav to next view
+            oAppCon.to("idView2");
+        },
+        onFruitSelect: function (oEvent) {
+            //Step 1: Get the router object
+            //this.Router
+            //Step 2: Trigger the ROute
+            var oSelectedItem = oEvent.getParameter("listItem");
+            this.Router.navTo("detail", {
+                fruitId: oSelectedItem.getBindingContextPath().split("/")[2]
             });
         },
-
+        onDeleteItems: function (oEvent) {
+            var oList = this.getView().byId("idLST");
+            var aSelectedItems = oList.getSelectedItems();
+            aSelectedItems.forEach(item => {
+                oList.removeItem(item);
+            });
+        },
+        onNavNext: function (oEvent) {
+            this.onNext();
+        },
         onDelete: function (oEvent) {
-            const oModel = this.getView().getModel();
-            const workItems = oModel.getProperty("/workItems");
-            const historyLog = oModel.getProperty("/historyLog");
-
-            const oContext = oEvent.getSource().getBindingContext();
-            const index = oContext.getPath().split("/").pop();
-            const deletedItem = Object.assign({}, workItems[index]);
-
-            workItems.splice(index, 1);
-            oModel.setProperty("/workItems", workItems);
-
-            historyLog.push({
-                action: "Deleted",
-                item: deletedItem,
-                timestamp: this._getFormattedTimestamp()
+            //Step 1: find out which item was selected for deleteion
+            var oSelected = oEvent.getParameter("listItem");
+            //Step 2: Get List Object
+            var oList = oEvent.getSource();
+            //Step 3: Remove the item from the list
+            oList.removeItem(oSelected);
+        },
+        onSearch: function (oEvent) {
+            //step 1: what is that user type in searh field
+            var sSearch = oEvent.getParameter("query");
+            if (sSearch === "" || sSearch === undefined) {
+                sSearch = oEvent.getParameter("newValue");
+            }
+            //step 2: construct the filter object with operand and operator
+            var oFilter = new Filter("name", FilterOperator.Contains, sSearch);
+            var oFilter2 = new Filter("taste", FilterOperator.Contains, sSearch);
+            var aFilter = [oFilter, oFilter2];
+            var oMaster = new Filter({
+                filters: aFilter,
+                and: false
             });
-            oModel.setProperty("/historyLog", historyLog);
-
-            this._updateFilteredHistory();
+            //step 3: get the list object
+            var oList = this.getView().byId("idLST");
+            //step 4: inject the filter to the list
+            oList.getBinding("items").filter(oMaster);
         },
-
-        onSelect: function (oEvent) {
-            const oModel = this.getView().getModel();
-            let oContext = oEvent.getParameter("listItem")?.getBindingContext()
-                || oEvent.getSource().getBindingContext();
-
-            if (!oContext) return;
-
-            const selectedItem = oContext.getObject();
-            const workItems = oModel.getProperty("/workItems");
-
-            const index = workItems.findIndex(item => item.id === selectedItem.id);
-
-            oModel.setProperty("/newItem", Object.assign({}, selectedItem));
-            oModel.setProperty("/currentEditIndex", index);
-            oModel.setProperty("/selectedTaskId", selectedItem.id);
-
-            this._updateFilteredHistory();
-        },
-
-        _getFormattedTimestamp: function () {
-            return new Date().toLocaleString();
-        },
-
-        formatHistoryEntry: function (action, item, timestamp) {
-            if (!item) return "";
-
-            const id = item.id || "N/A";
-            const assignee = item.name || "Unknown";
-            const status = item.status || "Unknown";
-
-            return `Task (ID: ${id}) was ${action} by "${assignee}"\nStatus: ${status} on ${timestamp}`;
-        },
-
-        _updateFilteredHistory: function () {
-            const oModel = this.getView().getModel();
-            const selectedId = oModel.getProperty("/selectedTaskId");
-            const allHistory = oModel.getProperty("/historyLog") || [];
-
-            const filtered = selectedId
-                ? allHistory.filter(entry => entry.item?.id === selectedId)
-                : [];
-
-            oModel.setProperty("/filteredHistoryLog", filtered);
-        },
-
-        // Routing Logic
-        onNextPress: function () {
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("RouteSecond");
+        onItemClick: function () {
+            //this - is my current class object - which is our controler
+            this.onNext();
         }
     });
 });
