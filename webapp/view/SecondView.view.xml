@@ -15,7 +15,7 @@
                         <core:Fragment fragmentName="sap.crudle.crudle.fragments.moreInfo" type="XML" />
                     </IconTabFilter>
                     <IconTabFilter id="_IDGenIconTabFilter1" iconColor="Positive" icon="sap-icon://supplier" text="Supplier">
-                        <Table id="_IDGenTable1" items="{/supplier}">
+                        <Table id="filterTab" items="{/supplier}">
                             <headerToolbar>
                                 <Toolbar id="_IDGenToolbar1">
                                     <ToolbarSpacer id="_IDGenToolbarSpacer"></ToolbarSpacer>
@@ -56,13 +56,13 @@
                     </IconTabFilter>
                     <IconTabFilter id="_IDGenIconTabFilter2" iconColor="Negative" icon="sap-icon://home" text="Cities">
                         <Select id="_IDGenSelect1" items="{/cities}">
-                            <core:Item id="_IDGenItem3" text="{cityName}" key="{cityName}" />
+                            <core:Item id="_IDGenItem3" text="{name}" key="{name}" />
                         </Select>
                         <ComboBox id="_IDGenComboBox" items="{/cities}">
-                            <core:Item id="_IDGenItem4" text="{cityName}" key="{cityName}" />
+                            <core:Item id="_IDGenItem4" text="{name}" key="{name}" />
                         </ComboBox>
                         <MultiComboBox id="_IDGenMultiComboBox" items="{/cities}">
-                            <core:Item id="_IDGenItem5" text="{cityName}" key="{cityName}" />
+                            <core:Item id="_IDGenItem5" text="{name}" key="{name}" />
                         </MultiComboBox>
                     </IconTabFilter>
                 </items>

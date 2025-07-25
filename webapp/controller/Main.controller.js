@@ -13,11 +13,9 @@ sap.ui.define([
             this.Router.getRoute("detail").attachPatternMatched(this.herculis, this);
         },
         herculis: function (oEvent) {
-            debugger;
             //var fruitId = oEvent.getParameter("arguments").fruitId;
             var sPath = this.extractPath(oEvent);
             var oList = this.getView().byId("idLST");
-            debugger;
             var element = {};
             if (oList.getItems().length > 0) {
                 for (let i = 0; i < oList.getItems().length; i++) {
