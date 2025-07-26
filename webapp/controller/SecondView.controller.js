@@ -6,10 +6,10 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "sap/m/MessageStrip"
-], function (BaseController, Fragment, Filter, FilterOperator, MessageBox, MessageToast, MessageStrip) {
+], function (Controller, Fragment, Filter, FilterOperator, MessageBox, MessageToast, MessageStrip) {
 
     "use strict";
-    return BaseController.extend("sap.crudle.crudle.controller.SecondView", {
+    return Controller.extend("sap.crudle.crudle.controller.SecondView", {
         onInit: function () {
             //Step 1: Get The Router Object
             this.oRouter = this.getOwnerComponent().getRouter();

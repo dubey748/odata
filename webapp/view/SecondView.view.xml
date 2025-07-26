@@ -6,7 +6,7 @@
     <Page id="_IDGenPage2" title="View 2" showNavButton="true" navButtonPress="onBack">
         <!-- <Button text="Back" icon="sap-icon://arrow-left" press="onBack" /> -->
         <content>
-            <ObjectHeader id="_IDGenObjectHeader" intro="{healthBenefit}" title="{name}" icon="{image}" number="{price}" numberUnit="{curr}"></ObjectHeader>
+            <ObjectHeader id="_IDGenObjectHeader" intro="{healthBenefit}" title="{name}" icon="{image}" number="{price}" numberUnit="{curr}"/>
     
             <IconTabBar id="_IDGenIconTabBar">
                 <items>
