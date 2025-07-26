@@ -1,34 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Crudle</title>
-    <style>
-        html,
-        body,
-        body>div,
-        #container,
-        #container-uiarea {
-            height: 100%;
-            margin: 0;
-        }
-    </style>
-
-    <!-- ✅ Correct Bootstrap Script -->
-    <script id="sap-ui-bootstrap" src="https://sdk.openui5.org/resources/sap-ui-core.js" data-sap-ui-theme="sap_fiori_3"
-        data-sap-ui-libs="sap.m" data-sap-ui-compatVersion="edge" data-sap-ui-async="true" data-sap-ui-resourceroots='{
-            "sap.crudle.crudle": "./"
-        }'>
-        </script>
+  <meta charset="utf-8">
+  <title>Crudle App</title>
+  <script
+    id="sap-ui-bootstrap"
+    src="https://sdk.openui5.org/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_fiori_3"
+    data-sap-ui-resourceroots='{
+      "sap.crudle.crudle": "./"
+    }'
+    data-sap-ui-onInit="module:sap/ui/core/ComponentSupport"
+    data-sap-ui-async="true"
+    data-sap-ui-compatVersion="edge"
+    data-sap-ui-libs="sap.m"
+  ></script>
 </head>
 
 <body class="sapUiBody sapUiSizeCompact" id="content">
-    <div id="container" data-sap-ui-component data-name="sap.crudle.crudle" data-id="sap.crudle.crudle"
-        data-settings='{"id" : "sap.crudle.crudle"}' data-handle-validation="true">
-    </div>
+  <div data-sap-ui-component
+       data-name="sap.crudle.crudle"
+       data-id="sap.crudle.crudle"
+       data-settings='{"id" : "sap.crudle.crudle"}'>
+  </div>
 </body>
-
 </html>
