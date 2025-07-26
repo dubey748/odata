@@ -11,10 +11,7 @@ sap.ui.define([
     "use strict";
     return Controller.extend("sap.crudle.crudle.controller.SecondView", {
         onInit: function () {
-            //Step 1: Get The Router Object
-            this.oRouter = this.getOwnerComponent().getRouter();
-            //We forefully pass this pointer to herculis (event handler)
-            this.oRouter.getRoute("detail").attachPatternMatched(this.herculis, this);
+            console.log("Ab:SecondView");
         },
         selectedField: null,
         onConfirm: function (oEvent) {
@@ -117,9 +114,12 @@ sap.ui.define([
             window.open(sText);
         },
         herculis: function (oEvent) {
-            var sPath = this.extractPath(oEvent);
-            this.getView().bindElement(sPath); // binding with /fruits/4 -
-        },
+            var fruitId = oEvent.getParameter("arguments").fruitId;
+            var sPath = "/fruits/" + fruitId;
+            console.log("🍉 Manual herculis path:", sPath);
+            this.getView().bindElement(sPath);
+        }
+        ,
         onBack: function () {
             this.getView().getParent().to("idView1");
         },
