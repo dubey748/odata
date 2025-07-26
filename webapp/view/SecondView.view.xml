@@ -7,11 +7,10 @@
         <!-- <Button text="Back" icon="sap-icon://arrow-left" press="onBack" /> -->
         <content>
             <ObjectHeader id="_IDGenObjectHeader" intro="{healthBenefit}" title="{name}" icon="{image}" number="{price}" numberUnit="{curr}"></ObjectHeader>
-
+    
             <IconTabBar id="_IDGenIconTabBar">
                 <items>
                     <IconTabFilter id="_IDGenIconTabFilter" icon="sap-icon://warning" text="More Info">
-                        <core:Fragment fragmentName="sap.crudle.crudle.fragments.moreInfo" type="XML" />
                         <core:Fragment fragmentName="sap.crudle.crudle.fragments.moreInfo" type="XML" />
                     </IconTabFilter>
                     <IconTabFilter id="_IDGenIconTabFilter1" iconColor="Positive" icon="sap-icon://supplier" text="Supplier">
@@ -72,8 +71,8 @@
             <Toolbar id="_IDGenToolbar2">
                 <content>
                     <ToolbarSpacer id="_IDGenToolbarSpacer1"></ToolbarSpacer>
-                    <Button id="_IDGenButton4" text="Order" type="Emphasized" />
-                    <Button id="_IDGenButton5" text="Cancel" type="Reject" />
+                    <Button id="_IDGenButton4" press="onOrder" text="Order" type="Emphasized" />
+                    <Button id="_IDGenButton5" press="onCancel" text="Cancel" type="Reject" />
                 </content>
             </Toolbar>
         </footer>

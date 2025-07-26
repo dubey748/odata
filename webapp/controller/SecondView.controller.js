@@ -1,12 +1,15 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "sap/crudle/crudle/controller/BaseController",
     "sap/ui/core/Fragment",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (Controller, Fragment, Filter, FilterOperator) {
-    "use strict";
+    "sap/ui/model/FilterOperator",
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
+    "sap/m/MessageStrip"
+], function (BaseController, Fragment, Filter, FilterOperator, MessageBox, MessageToast, MessageStrip) {
 
-    return Controller.extend("sap.crudle.crudle.controller.SecondView", {
+    "use strict";
+    return BaseController.extend("sap.crudle.crudle.controller.SecondView", {
         onInit: function () {
             //Step 1: Get The Router Object
             this.oRouter = this.getOwnerComponent().getRouter();
@@ -119,6 +122,24 @@ sap.ui.define([
         },
         onBack: function () {
             this.getView().getParent().to("idView1");
+        },
+        handleConfirm: function (status) {
+            if (status == 'OK') {
+                MessageToast.show(this.readMessage("XMSG_ORDERL", "9099"))
+            }
+            else {
+                MessageToast.show(this.readMessage("XMSG_CANCEL"))
+            }
+        },
+        onOrder: function (params) {
+            MessageBox.confirm(this.readMessage("XMSG_CONFIRMATION"), {
+                title: "Confirmation",
+                onClose: this.handleConfirm.bind(this)
+            }
+            )
+        },
+        onCancel: function () {
+            MessageToast.show("Order canceled");
         }
     });
 });
