@@ -78,17 +78,6 @@
 			"image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ868djAR5mIlAFnnjF---4paarCg48aQTr-g&usqp=CAU"
 		},
 		{
-			"name": "Watermelon",
-			"color": "Red",
-			"taste": "Alkaline",
-			"size": "Large",
-			"price": 30,
-			"curr": "INR",
-			"healthBenefit": "Strengthens bones, cleans kidneys",
-			"season": "Summer",
-			"image": "http://upload.evocdn.co.uk/fruitnet/uploads/asset_image/2_1212685_s.jpg"
-		},
-		{
 			"name": "Guava",
 			"color": "Green",
 			"taste": "Neutral",
@@ -197,17 +186,6 @@
 			"healthBenefit": "Improves brain power, stops thyroid problems",
 			"season": "Spring",
 			"image": "https://i0.wp.com/cdn-prod.medicalnewstoday.com/content/images/articles/287/287710/blueberries.jpg"
-		},
-		{
-			"name": "Black Berry",
-			"color": "Black",
-			"taste": "Berries",
-			"size": "Small",
-			"price": 280,
-			"curr": "INR",
-			"healthBenefit": "Improves brain power, stops thyroid problems",
-			"season": "Spring",
-			"image": "https://snaped.fns.usda.gov/sites/default/files/styles/crop_ratio_7_5/public/seasonal-produce/2018-05/blackberries.jpg"
 		}
 	],
 	"supplier": [
